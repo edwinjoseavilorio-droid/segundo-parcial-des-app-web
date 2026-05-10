@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="fw-bold text-primary">
-        <i class="fa-solid fa-flask me-2"></i>gestion de productos
+        <i class="fa-solid fa-flask me-2"></i>Gestión de Servicios
       </h2>
       <button class="btn btn-primary" @click="abrirModalCrear">
         <i class="fa-solid fa-plus me-2"></i>Nuevo Servicio
@@ -16,6 +16,7 @@
           <thead class="table-primary">
             <tr>
               <th>#</th>
+              <th>Imagen</th>
               <th>Nombre</th>
               <th>Descripción</th>
               <th>Precio</th>
@@ -25,17 +26,23 @@
           <tbody>
             <tr v-for="producto in productos" :key="producto.id">
               <td>{{ producto.id }}</td>
+              <td>
+                <img :src="producto.image || placeholderImage" :alt="producto.name"
+                  @error="handleImageError"
+                  style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+              </td>
               <td>{{ producto.name }}</td>
               <td class="text-muted small">{{ producto.description }}</td>
-              <td>$ {{ producto.price.toLocaleString() }}</td>
+              <td>$ {{ producto.price?.toLocaleString() }}</td>
               <td class="text-center">
-                <button class="btn btn-sm btn-outline-primary me-1"
-                  @click="abrirModalEditar(producto)">
+                <button class="btn btn-sm btn-outline-primary me-1" @click="abrirModalEditar(producto)">
                   <i class="fa-solid fa-pen"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger"
-                  @click="eliminarProducto(producto.id)">
+                <button class="btn btn-sm btn-outline-danger" @click="eliminarProducto(producto.id)">
                   <i class="fa-solid fa-trash"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-info ms-1" @click="verDetalle(producto)">
+                  <i class="fa-solid fa-eye"></i>
                 </button>
               </td>
             </tr>
@@ -44,7 +51,7 @@
       </div>
     </div>
 
-    <!-- Modal crear/editar -->
+    <!-- Modal crear/editar proyectos -->
     <div v-if="mostrarModal" class="modal-overlay" @click.self="cerrarModal">
       <div class="modal-box card shadow-lg p-4">
         <h5 class="fw-bold text-primary mb-3">
@@ -54,8 +61,7 @@
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Nombre</label>
-          <input v-model="form.name" type="text" class="form-control"
-            placeholder="Nombre del servicio" />
+          <input v-model="form.name" type="text" class="form-control" placeholder="Nombre del servicio" />
         </div>
 
         <div class="mb-3">
@@ -66,14 +72,12 @@
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Precio (COP)</label>
-          <input v-model.number="form.price" type="number" class="form-control"
-            placeholder="Ej: 120000" />
+          <input v-model.number="form.price" type="number" class="form-control" placeholder="Ej: 120000" />
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold">URL de imagen</label>
-          <input v-model="form.image" type="text" class="form-control"
-            placeholder="https://..." />
+          <input v-model="form.image" type="text" class="form-control" placeholder="https://..." />
         </div>
 
         <div class="d-flex gap-2 justify-content-end">
@@ -85,18 +89,40 @@
         </div>
       </div>
     </div>
-
+    <!-- Modal ver detalle -->
+    <div v-if="mostrarDetalle" class="modal-overlay" @click.self="mostrarDetalle = false">
+      <div class="modal-box card shadow-lg p-4">
+        <h5 class="fw-bold text-primary mb-3">
+          <i class="fa-solid fa-eye me-2"></i>Detalle del Servicio
+        </h5>
+        <img :src="productoDetalle.image || placeholderImage" :alt="productoDetalle.name" class="w-100 mb-3"
+          @error="handleImageError"
+          style="height: 200px; object-fit: cover; border-radius: 8px;">
+        <h6 class="fw-bold">{{ productoDetalle.name }}</h6>
+        <p class="text-muted">{{ productoDetalle.description }}</p>
+        <p class="fw-bold text-success">$ {{ productoDetalle.price?.toLocaleString() }}</p>
+        <button class="btn btn-secondary w-100" @click="mostrarDetalle = false">Cerrar</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import productosIniciales from '../data/products.json'
+import placeholderImage from '../assets/placeholder.svg'
 
 const productos = ref([])
 const mostrarModal = ref(false)
 const modoEditar = ref(false)
 const form = ref({ id: null, name: '', description: '', price: 0, image: '' })
+
+const mostrarDetalle = ref(false)
+const productoDetalle = ref({})
+
+function handleImageError(event) {
+  event.target.src = placeholderImage
+}
 
 // Cargar productos desde LocalStorage o JSON inicial
 onMounted(() => {
@@ -134,7 +160,7 @@ function guardarProducto() {
     const index = productos.value.findIndex(p => p.id === form.value.id)
     if (index !== -1) productos.value[index] = { ...form.value }
   } else {
-    const nuevoId = Math.max(...productos.value.map(p => p.id)) + 1
+    const nuevoId = productos.value.length > 0 ? Math.max(...productos.value.map(p => p.id)) + 1 : 1
     productos.value.push({ ...form.value, id: nuevoId })
   }
   guardarEnStorage()
@@ -146,6 +172,11 @@ function eliminarProducto(id) {
     productos.value = productos.value.filter(p => p.id !== id)
     guardarEnStorage()
   }
+
+}
+function verDetalle(producto) {
+  productoDetalle.value = producto
+  mostrarDetalle.value = true
 }
 </script>
 
@@ -153,12 +184,13 @@ function eliminarProducto(id) {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
+
 .modal-box {
   width: 100%;
   max-width: 520px;

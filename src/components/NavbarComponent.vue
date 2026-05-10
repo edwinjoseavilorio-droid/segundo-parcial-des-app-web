@@ -1,14 +1,14 @@
 <template>
-  <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #034f84;">
+  <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #034f84; padding: 0.75rem 0;">
     <div class="container-fluid">
 
-      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-        <img src="https://ingeocimyc.com.co/assets/logo-ingeocimyc.svg"
-             alt="INGEOCIMYC" style="height: 40px; filter: brightness(0) invert(1);">
-        <span class="text-white fw-bold">INGEOCIMYC</span>
+      <a class="navbar-brand d-flex align-items-center gap-3" href="#" style="margin: 0; padding: 0;">
+        <img :src="logoIngeocimyc"
+             alt="INGEOCIMYC" style="height: 50px; width: 50px; object-fit: contain; flex-shrink: 0;">
+        <span class="text-white fw-bold" style="font-size: 1.2rem; margin: 0;">INGEOCIMYC</span>
       </a>
 
-      <div class="d-flex align-items-center gap-3">
+      <div class="d-flex align-items-center gap-3 ms-auto">
         <span class="text-white small">
           <i class="fa-solid fa-user me-1"></i>{{ nombreUsuario }}
         </span>
@@ -24,6 +24,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import logoIngeocimyc from '../assets/logo-ingeocimyc.svg'
 
 const router = useRouter()
 const nombreUsuario = ref(localStorage.getItem('nombreUsuario') || 'Usuario')
