@@ -1,5 +1,42 @@
-# Vue 3 + Vite
+# INGEOCIMYC — Sistema de Gestión Web
+# Segundo Parcial — Desarrollo de Aplicaciones Web
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# Descripción
+Aplicación web modular para **INGEOCIMYC**, laboratorio de Geotecnia y Concretos.
+Permite gestionar servicios, clientes y proyectos del laboratorio mediante
+una interfaz moderna construida con Vue 3 y Bootstrap 5.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+# Integrantes
+| Nombre | Rol |
+|--------|-----|
+| (Tu nombre aquí) | Desarrollador Frontend |
+| (Nombre compañero) | Desarrollador Frontend |
+
+# Tecnologías
+- Vue 3 + Vite
+- Vue Router 4
+- Bootstrap 5.3
+- LocalStorage (CRUD simulado)
+
+# 🚀 Cómo ejecutar
+```bash
+npm install
+npm run dev
+```
+
+# 📁 Estructura del proyecto
+src/
+├── assets/
+├── components/     # Navbar, Sidebar, Footer, ProductCard
+├── data/           # usuarios.json, products.json
+├── router/         # Configuración de rutas
+├── views/          # LoginView,
+├── main.js
+└── style.css
+
+# Credenciales de prueba
+| Usuario | Contraseña |
+|---------|-----------|
+| admin   | 1234      |
+| usuario | abcd      |
+
