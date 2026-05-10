@@ -1,0 +1,39 @@
+:root {
+  --primary: #034f84;
+  --secondary: #0077b6;
+  --accent: #f0a500;
+  --light: #f8f9fa;
+  --dark: #212529;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--light);
+}
+
+.sidebar {
+  min-height: 100vh;
+  background-color: var(--primary);
+  width: 220px;
+}
+
+.sidebar a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  display: block;
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin: 4px 8px;
+  transition: background 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: var(--secondary);
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+  padding: 24px;
+}
