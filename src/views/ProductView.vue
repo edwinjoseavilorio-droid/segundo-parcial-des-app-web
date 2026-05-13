@@ -2,10 +2,10 @@
   <div>
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="fw-bold text-primary">
-        <i class="fa-solid fa-flask me-2"></i>Gestión de Servicios
+        <i class="fa-solid fa-flask me-2"></i>gestion de proyectos
       </h2>
       <button class="btn btn-primary" @click="abrirModalCrear">
-        <i class="fa-solid fa-plus me-2"></i>Nuevo Servicio
+        <i class="fa-solid fa-plus me-2"></i>Nuevo proyecto
       </button>
     </div>
 
@@ -129,6 +129,19 @@ onMounted(() => {
   const guardados = localStorage.getItem('productos')
   if (guardados) {
     productos.value = JSON.parse(guardados)
+    const productosSync = [1, 2, 3, 10]
+    let actualizo = false
+
+    productosSync.forEach(id => {
+      const imagenInicial = productosIniciales.find(p => p.id === id)?.image
+      const productoLocal = productos.value.find(p => p.id === id)
+      if (productoLocal && imagenInicial && productoLocal.image !== imagenInicial) {
+        productoLocal.image = imagenInicial
+        actualizo = true
+      }
+    })
+
+    if (actualizo) guardarEnStorage()
   } else {
     productos.value = productosIniciales
     guardarEnStorage()
