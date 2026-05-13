@@ -33,7 +33,7 @@
               </td>
               <td>{{ producto.name }}</td>
               <td class="text-muted small">{{ producto.description }}</td>
-              <td>$ {{ producto.price?.toLocaleString() }}</td>
+              <td>{{ producto.price?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }}</td>
               <td class="text-center">
                 <button class="btn btn-sm btn-outline-primary me-1" @click="abrirModalEditar(producto)">
                   <i class="fa-solid fa-pen"></i>
@@ -72,7 +72,7 @@
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Precio (COP)</label>
-          <input v-model.number="form.price" type="number" class="form-control" placeholder="Ej: 120000" />
+          <input v-model.number="form.price" type="number" class="form-control" placeholder="Ej: 120000 " />
         </div>
 
         <div class="mb-3">
@@ -100,7 +100,7 @@
           style="height: 200px; object-fit: cover; border-radius: 8px;">
         <h6 class="fw-bold">{{ productoDetalle.name }}</h6>
         <p class="text-muted">{{ productoDetalle.description }}</p>
-        <p class="fw-bold text-success">$ {{ productoDetalle.price?.toLocaleString() }}</p>
+        <p class="fw-bold text-success">{{ productoDetalle.price?.toLocaleString('es-CO', { style: 'currency', currency: 'COP' }) }}</p>
         <button class="btn btn-secondary w-100" @click="mostrarDetalle = false">Cerrar</button>
       </div>
     </div>
